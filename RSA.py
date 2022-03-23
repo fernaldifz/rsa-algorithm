@@ -40,14 +40,31 @@ def isPrime(num):
 def generatePairKey(): #pembangkit kunci publik
     p,q = generatePairNumbers()
 
-def encrypt(): #enkripsi menggunakan RSA
-    pass
+def toHex(encryptArray): #khusus untuk ciphertext dalam notasi heksadesimal
+    tmpArray = []
+    encryptHexArray = []
+    encryptHexString = ''
 
-def decrypt(): #dekripsi menggunakan RSA
-    pass
+    for block in encryptArray:     
+        if len(str(block)) % 3 == 0:
+            tmpString = '0' + str(block)
+            tmpArray.append(tmpString)
+        else:
+            tmpArray.append(str(block))
 
-def toHex(): #khusus untuk ciphertext dalam notasi heksadesimal
-    pass
+    for strBlock in tmpArray:
+        if strBlock[0] == '0':
+            encryptHexArray.append('%x' % int(strBlock[1]))
+            encryptHexArray.append('%x' % int(strBlock[2] + strBlock[3]))
+        else:
+            encryptHexArray.append('%x' % int(strBlock[0] + strBlock[1]))
+            encryptHexArray.append('%x' % int(strBlock[2] + strBlock[3]))
+    
+    for hexStr in encryptHexArray:
+        encryptHexString += hexStr + ' '
+    
+    return encryptHexString
+
 
 def showTimeLapse(): #program dapat menampilkan interval waktu enkripsi / dekripsi berapa lama
     pass
@@ -76,5 +93,10 @@ def encryptDecryptText(n, e, d):
     decryptArray = decrypt(encryptArray, d)
     print("hasil dekripsi: ", decryptArray)
 
-encryptDecryptText(n, e, d)
+encryptArray = encrypt('ori-file/test_text.txt', n, e)
+print("hasil enkripsi: ", encryptArray)
+print(toHex(encryptArray))
+# decryptArray = decrypt(encryptArray, d)
+# print("hasil dekripsi: ", decryptArray)
+# encryptDecryptText(n, e, d)
 #############
