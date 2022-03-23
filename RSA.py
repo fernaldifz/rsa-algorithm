@@ -15,15 +15,29 @@ def encrypt(Path, n, e): #enkripsi menggunakan RSA
     encryptArray = [0 for i in range(len(byteArray))]
 
     for i, value in enumerate(byteArray):
-        encryptArray[i] = value**e % n
+        encryptArray[i] = str(value**e % n)
     
-    return encryptArray
+    encryptString = " "
+    encryptString = encryptString.join(encryptArray)
+        
+    with open("encrypted", "w") as encryptedFile:
+        encryptedFile.write(encryptString)
 
-def decrypt(encryptArray, d): #dekripsi menggunakan RSA
+def decrypt(Path, d): #dekripsi menggunakan RSA
+    encryptFile = open(Path, "r").readlines()
+    encryptString = encryptFile[0]
+    encryptArray = encryptString.split()
+
     decryptArray = [0 for i in range(len(encryptArray))]
     for i, value in enumerate(encryptArray):
-        decryptArray[i] = value**d % n
+        decryptArray[i] = chr(int(value)**d % n)
     
+    decryptString = ""
+    for i in range(len(decryptArray)):
+        decryptString += decryptArray[i]
+    
+    with open("decrypted", "w") as decryptedFile:
+        decryptedFile.write(decryptString)
     return decryptArray
 
 def isPrime(num):
@@ -88,15 +102,8 @@ e = 79
 d = 1019 
 #############
 def encryptDecryptText(n, e, d):
-    encryptArray = encrypt('ori-file/test_text.txt', n, e)
-    print("hasil enkripsi: ", encryptArray)
-    decryptArray = decrypt(encryptArray, d)
-    print("hasil dekripsi: ", decryptArray)
+    encrypt("ori-file/test_text.txt", n, e)
+    decrypt("encrypted", d)
 
-encryptArray = encrypt('ori-file/test_text.txt', n, e)
-print("hasil enkripsi: ", encryptArray)
-print(toHex(encryptArray))
-# decryptArray = decrypt(encryptArray, d)
-# print("hasil dekripsi: ", decryptArray)
-# encryptDecryptText(n, e, d)
+encryptDecryptText(n, e, d)
 #############
