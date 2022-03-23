@@ -1,15 +1,24 @@
 import random,math
 
 def generatePairNumbers():
-    primes = [i for i in range(2**8,(2**16)-1) if isPrime(i)]
-    p,q = 0,0
+    primes = []
+    p,q,counter = 0,0,0
+
+    for i in range(2**12,2**16):
+        if isPrime(i):
+            primes.append(i)
+            counter += 1
+
+        if counter == 500:
+            break
 
     while p == q:
         p,q = random.choice(primes),random.choice(primes)
     
+    print("p dan q sudah ada")
     return p,q
 
-def encrypt(Path, n, e): #enkripsi menggunakan RSA
+def encryptFile(Path, n, e): #enkripsi menggunakan RSA
     byteArray = openFile(Path)
 
     encryptArray = [0 for i in range(len(byteArray))]
@@ -23,7 +32,7 @@ def encrypt(Path, n, e): #enkripsi menggunakan RSA
     with open("encrypted", "w") as encryptedFile:
         encryptedFile.write(encryptString)
 
-def decrypt(Path, d): #dekripsi menggunakan RSA
+def decryptFile(Path, d): #dekripsi menggunakan RSA
     encryptFile = open(Path, "r").readlines()
     encryptString = encryptFile[0]
     encryptArray = encryptString.split()
@@ -40,6 +49,23 @@ def decrypt(Path, d): #dekripsi menggunakan RSA
         decryptedFile.write(decryptString)
     return decryptArray
 
+def encryptText(Path, n, e): #enkripsi menggunakan RSA
+    byteArray = openFile(Path)
+
+    encryptArray = [0 for i in range(len(byteArray))]
+
+    for i, value in enumerate(byteArray):
+        encryptArray[i] = value**e % n
+    
+    return encryptArray
+
+def decryptText(encryptArray, d): #dekripsi menggunakan RSA
+    decryptArray = [0 for i in range(len(encryptArray))]
+    for i, value in enumerate(encryptArray):
+        decryptArray[i] = value**d % n
+    
+    return decryptArray
+
 def isPrime(num):
     if num == 2:
         return True
@@ -51,8 +77,30 @@ def isPrime(num):
                 return False
     return True
 
-def generatePairKey(): #pembangkit kunci publik
+def modInverse(e, phi):
+    for d in range(1,phi):
+        if ((e % phi) * (d % phi)) % phi == 1:
+            return d
+
+def generatePairKey(): #pembangkit pasangan kunci (privat dan publik)
     p,q = generatePairNumbers()
+    N = p*q
+    phi = (p-1)*(q-1)
+
+    print("mulai cari e")
+
+    publicKeyCandidate = []
+    for e in range(2**12,phi//(2**12)):
+        if isPrime(e):
+            publicKeyCandidate.append(e)
+
+    print("mulai cari d")
+
+    e = random.choice(publicKeyCandidate)
+
+    d = modInverse(e,phi)
+
+    return (e,N),(d,N)
 
 def toHex(encryptArray): #khusus untuk ciphertext dalam notasi heksadesimal
     tmpArray = []
@@ -97,13 +145,18 @@ def openFile(Path):
 
 #############
 # SEMENTARA #
-n = 3337
-e = 79
-d = 1019 
+# n = 3337
+# e = 79
+# d = 1019 
+n = 26878129
+e = 4703
+d = 14704967 
 #############
 def encryptDecryptText(n, e, d):
-    encrypt("ori-file/test_text.txt", n, e)
-    decrypt("encrypted", d)
+    enc = encryptText("ori-file/test_text.txt", n, e)
+    print(enc)
+    dec = decryptText(enc, d)
+    print(dec)
 
 encryptDecryptText(n, e, d)
 #############
