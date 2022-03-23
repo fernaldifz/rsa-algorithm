@@ -1,4 +1,4 @@
-import random,math
+import random, math, time
 
 def generatePairNumbers():
     primes = []
@@ -19,6 +19,7 @@ def generatePairNumbers():
     return p,q
 
 def encryptFile(Path, n, e): #enkripsi menggunakan RSA
+    startTime = time.time()
     byteArray = openFile(Path)
 
     encryptArray = [0 for i in range(len(byteArray))]
@@ -31,8 +32,13 @@ def encryptFile(Path, n, e): #enkripsi menggunakan RSA
         
     with open("encrypted", "w") as encryptedFile:
         encryptedFile.write(encryptString)
+    
+    print("waktu enkripsi %s detik" % (time.time() - startTime))
+    return encryptArray
 
 def decryptFile(Path, d): #dekripsi menggunakan RSA
+    startTime = time.time()
+
     encryptFile = open(Path, "r").readlines()
     encryptString = encryptFile[0]
     encryptArray = encryptString.split()
@@ -47,23 +53,8 @@ def decryptFile(Path, d): #dekripsi menggunakan RSA
     
     with open("decrypted", "w") as decryptedFile:
         decryptedFile.write(decryptString)
-    return decryptArray
 
-def encryptText(Path, n, e): #enkripsi menggunakan RSA
-    byteArray = openFile(Path)
-
-    encryptArray = [0 for i in range(len(byteArray))]
-
-    for i, value in enumerate(byteArray):
-        encryptArray[i] = value**e % n
-    
-    return encryptArray
-
-def decryptText(encryptArray, d): #dekripsi menggunakan RSA
-    decryptArray = [0 for i in range(len(encryptArray))]
-    for i, value in enumerate(encryptArray):
-        decryptArray[i] = value**d % n
-    
+    print("waktu dekripsi %s detik" % (time.time() - startTime))        
     return decryptArray
 
 def isPrime(num):
@@ -144,7 +135,7 @@ def openFile(Path):
 
 
 #############
-# SEMENTARA #
+# SEMENTARA # 
 # n = 3337
 # e = 79
 # d = 1019 
@@ -152,11 +143,11 @@ n = 26878129
 e = 4703
 d = 14704967 
 #############
-def encryptDecryptText(n, e, d):
-    enc = encryptText("ori-file/test_text.txt", n, e)
-    print(enc)
-    dec = decryptText(enc, d)
-    print(dec)
+def encryptDecryptFile(n, e, d):
+    enc = encryptFile("ori-file/test_text.txt", n, e)
+    print("array enkripsi: ", enc)
+    dec = decryptFile("encrypted", d)
+    print("array dekripsi", dec)
 
-encryptDecryptText(n, e, d)
+encryptDecryptFile(n, e, d)
 #############
