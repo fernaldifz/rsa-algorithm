@@ -1,4 +1,4 @@
-import random, math, time
+import random, math, time, os
 
 def generatePairNumbers():
     primes = []
@@ -33,8 +33,8 @@ def encryptFile(Path, n, e): #enkripsi menggunakan RSA
     with open("encrypted", "w") as encryptedFile:
         encryptedFile.write(encryptString)
     
-    # print("waktu enkripsi %s detik" % (time.time() - startTime))
-    return encryptArray
+    encryptTime = time.time() - startTime
+    return (encryptArray, encryptTime)
 
 def decryptFile(Path, d): #dekripsi menggunakan RSA
     startTime = time.time()
@@ -54,8 +54,8 @@ def decryptFile(Path, d): #dekripsi menggunakan RSA
     with open("decrypted", "w") as decryptedFile:
         decryptedFile.write(decryptString)
 
-    print("waktu dekripsi %s detik" % (time.time() - startTime))        
-    return decryptArray
+    decryptTime = time.time() - startTime      
+    return (decryptArray, decryptTime)
 
 def isPrime(num):
     if num == 2:
@@ -94,36 +94,17 @@ def generatePairKey(): #pembangkit pasangan kunci (privat dan publik)
     return (e,N),(d,N)
 
 def toHex(encryptArray): #khusus untuk ciphertext dalam notasi heksadesimal
-    tmpArray = []
-    encryptHexArray = []
-    encryptHexString = ''
-
-    for block in encryptArray:     
-        if len(str(block)) % 3 == 0:
-            tmpString = '0' + str(block)
-            tmpArray.append(tmpString)
-        else:
-            tmpArray.append(str(block))
-
-    for strBlock in tmpArray:
-        if strBlock[0] == '0':
-            encryptHexArray.append('%x' % int(strBlock[1]))
-            encryptHexArray.append('%x' % int(strBlock[2] + strBlock[3]))
-        else:
-            encryptHexArray.append('%x' % int(strBlock[0] + strBlock[1]))
-            encryptHexArray.append('%x' % int(strBlock[2] + strBlock[3]))
+    encryptHexArray = [0 for i in range(len(encryptArray))]
+    for i in range(len(encryptArray)):
+        encryptHexArray[i] = str(hex(int(encryptArray[i])))
     
-    for hexStr in encryptHexArray:
-        encryptHexString += hexStr + ' '
-    
+    encryptHexString = " "
+    encryptHexString = encryptHexString.join(encryptHexArray)
     return encryptHexString
 
-
-def showTimeLapse(): #program dapat menampilkan interval waktu enkripsi / dekripsi berapa lama
-    pass
-
-def showFileSize(): #program dapat menampilkan size file hasil enkripsi / dekripsi
-    pass
+def showFileSize(Path): #program dapat menampilkan size file hasil enkripsi / dekripsi
+    fileSize = os.path.getsize(Path)
+    return fileSize
 
 def unpackKeyTuples(string):
     sX, sY = '',''

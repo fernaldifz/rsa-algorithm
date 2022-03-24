@@ -40,7 +40,7 @@ class RSAEnc(QDialog):
         if self.key.text() != "":
             option=QFileDialog.Options()
             file = QFileDialog.getOpenFileName(widget,"Open Single File","Default File","All Files (*)",options=option)
-            cipher = RSA.encryptFile(file[0],self.N,self.e)
+            cipher = RSA.encryptFile(file[0],self.N,self.e)[0]
 
             cipherHex = RSA.toHex(cipher)
             self.file.setWordWrap(True)
