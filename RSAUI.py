@@ -1,18 +1,18 @@
 from pydoc import plain
 import time
 import sys
-import RC4Modified
+import RSA
 from os import curdir, environ
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, QWidget, QMessageBox, QPushButton, QFileDialog, QVBoxLayout
 
-class RC4Encryption(QDialog):
+class RSAEnc(QDialog):
     def __init__(self):
-        super(RC4Encryption, self).__init__()
-        loadUi("RC4Enc.ui", self)
-        self.decrypt.clicked.connect(self.gotoRC4Decrypt)
+        super(RSAEnc, self).__init__()
+        loadUi("RSAEnc.ui", self)
+        self.decrypt.clicked.connect(self.gotoRSADec)
         self.encrypt.clicked.connect(self.encrypting)
         self.savecipher.clicked.connect(self.saveCipher)
         self.selectfile.clicked.connect(self.openFileToEncrypt)
@@ -21,12 +21,13 @@ class RC4Encryption(QDialog):
         self.file.setText("")
         plaintext = self.plaintext.toPlainText()
         key = self.key.toPlainText()
-        cipher = RC4Modified.encrypt(key, plaintext)
+        if self.key.toPlainText() != "":
+            cipher = RSA.encryptFile()
         self.ciphertext.setText(cipher)
 
-    def gotoRC4Decrypt(self):
-        RC4Dec = RC4Decryption()
-        widget.addWidget(RC4Dec)
+    def gotoRSADec(self):
+        RSADec = RSADec()
+        widget.addWidget(RSADec)
         widget.setCurrentIndex(widget.currentIndex()+1)
     
     def saveCipher(self):
@@ -56,17 +57,17 @@ class RC4Encryption(QDialog):
             self.warning.setText("decide the \nkey first!")
        
 
-class RC4Decryption(QDialog):
+class RSADec(QDialog):
     def __init__(self):
-        super(RC4Decryption, self).__init__()
-        loadUi("RC4Dec.ui", self)
-        self.encrypt.clicked.connect(self.gotoRC4Encrypt)
+        super(RSADec, self).__init__()
+        loadUi("RSADec.ui", self)
+        self.encrypt.clicked.connect(self.gotoRSAEnc)
         self.decrypt.clicked.connect(self.decrypting)
         self.selectfile.clicked.connect(self.openFileToDecrypt)
 
-    def gotoRC4Encrypt(self):
-        RC4Enc = RC4Encryption()
-        widget.addWidget(RC4Enc)
+    def gotoRSAEnc(self):
+        RSAEnc = RSAEnc()
+        widget.addWidget(RSAEnc)
         widget.setCurrentIndex(widget.currentIndex()+1)
     
     def decrypting(self):
@@ -92,6 +93,34 @@ class RC4Decryption(QDialog):
         else:
             self.warning.setText("decide the \nkey first!")
 
+class RSAGenKey(QDialog):
+    def __init__(self):
+        super(RSAGenKey, self).__init__()
+        loadUi("RSAGenKey.ui", self)
+        self.encrypt.clicked.connect(self.gotoRSAEnc)
+        self.decrypt.clicked.connect(self.gotoRSADec)
+        self.genKey.clicked.connect(self.genKeyPair)
+
+
+    def genKeyPair(self):
+        pubKey, privKey = RSA.generatePairKey()
+        e,N = pubKey
+        d,N = privKey
+
+        self.e.setText("   " + str(e))
+        self.d.setText("   " + str(d))
+        self.N.setText("   " + str(N))
+
+    def gotoRSAEnc(self):
+        RSAEnc = RSAEnc()
+        widget.addWidget(RSAEnc)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+    
+    def gotoRSADec(self):
+        RSADec = RSADec()
+        widget.addWidget(RSADec)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
 def suppress_qt_warnings():
     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
     environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
@@ -107,8 +136,10 @@ def run():
 
 suppress_qt_warnings()
 app = QApplication(sys.argv)
-menu = RC4Encryption()
+menu = RSAGenKey()
 widget = QtWidgets.QStackedWidget()
 widget.addWidget(menu)
 widget.setFixedHeight(512)
 widget.setFixedWidth(720)
+
+run()

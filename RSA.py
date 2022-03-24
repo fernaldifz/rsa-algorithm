@@ -4,7 +4,7 @@ def generatePairNumbers():
     primes = []
     p,q,counter = 0,0,0
 
-    for i in range(2**12,2**16):
+    for i in range(2**8,2**12):
         if isPrime(i):
             primes.append(i)
             counter += 1
@@ -81,7 +81,7 @@ def generatePairKey(): #pembangkit pasangan kunci (privat dan publik)
     print("mulai cari e")
 
     publicKeyCandidate = []
-    for e in range(2**12,phi//(2**12)):
+    for e in range(2**8,phi//(2**8)):
         if isPrime(e):
             publicKeyCandidate.append(e)
 
@@ -143,11 +143,11 @@ n = 26878129
 e = 4703
 d = 14704967 
 #############
-def encryptDecryptFile(n, e, d):
-    enc = encryptFile("ori-file/test_text.txt", n, e)
-    print("array enkripsi: ", enc)
-    dec = decryptFile("encrypted", d)
-    print("array dekripsi", dec)
+# def encryptDecryptFile(n, e, d):
+#     enc = encryptFile("ori-file/test_text.txt", n, e)
+#     print("array enkripsi: ", enc)
+#     dec = decryptFile("encrypted", d)
+#     print("array dekripsi", dec)
 
-encryptDecryptFile(n, e, d)
+# encryptDecryptFile(n, e, d)
 #############

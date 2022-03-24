@@ -95,7 +95,7 @@ color: #101920;
      <string>Decrypt</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_8">
+   <widget class="QLabel" name="e">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -106,7 +106,12 @@ color: #101920;
     </property>
     <property name="styleSheet">
      <string notr="true">background: #ffffff;
-border-radius: 2px;</string>
+border-radius: 2px;
+font-family: Open Sans;
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+color: #101920</string>
     </property>
     <property name="text">
      <string/>
@@ -156,7 +161,7 @@ color: #101920;</string>
      <string>Generate Key !</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="encrypt_2">
+   <widget class="QPushButton" name="encrypt">
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -181,7 +186,7 @@ color: #101920;
      <string>Encrypt</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_9">
+   <widget class="QLabel" name="d">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -192,7 +197,12 @@ color: #101920;
     </property>
     <property name="styleSheet">
      <string notr="true">background: #ffffff;
-border-radius: 2px;</string>
+border-radius: 2px;
+font-family: Open Sans;
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+color: #101920</string>
     </property>
     <property name="text">
      <string/>
@@ -270,7 +280,7 @@ color: #FCE417;
      <string>N value</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_12">
+   <widget class="QLabel" name="N">
     <property name="geometry">
      <rect>
       <x>480</x>
@@ -281,7 +291,12 @@ color: #FCE417;
     </property>
     <property name="styleSheet">
      <string notr="true">background: #ffffff;
-border-radius: 2px;</string>
+border-radius: 2px;
+font-family: Open Sans;
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+color: #101920</string>
     </property>
     <property name="text">
      <string/>
