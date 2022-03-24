@@ -33,7 +33,7 @@ def encryptFile(Path, n, e): #enkripsi menggunakan RSA
     with open("encrypted", "w") as encryptedFile:
         encryptedFile.write(encryptString)
     
-    print("waktu enkripsi %s detik" % (time.time() - startTime))
+    # print("waktu enkripsi %s detik" % (time.time() - startTime))
     return encryptArray
 
 def decryptFile(Path, d): #dekripsi menggunakan RSA
@@ -124,6 +124,19 @@ def showTimeLapse(): #program dapat menampilkan interval waktu enkripsi / dekrip
 
 def showFileSize(): #program dapat menampilkan size file hasil enkripsi / dekripsi
     pass
+
+def unpackKeyTuples(string):
+    sX, sY = '',''
+
+    for idx in range(0,string.index(',')):
+        if string[idx] != "(":
+           sX += string[idx]
+
+    for idx in range(string.index(',')+1, len(string)):
+        if string[idx] != ")":
+           sY += string[idx]
+
+    return int(sX),int(sY)
 
 def openFile(Path):
     file = open(Path, "rb")

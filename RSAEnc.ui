@@ -163,7 +163,7 @@ color: #101920;</string>
      <string>Save Cipher !</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="selectfile">
+   <widget class="QPushButton" name="selectencrypt">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -200,7 +200,7 @@ border-radius: 2px;
 ont-family: Open Sans;
 font-style: normal;
 font-weight: bold;
-font-size: 24px;
+font-size: 16px;
 /* identical to box height */
 
 
@@ -229,7 +229,7 @@ border-radius: 2px;
 ont-family: Open Sans;
 font-style: normal;
 font-weight: bold;
-font-size: 24px;
+font-size: 16px;
 /* identical to box height */
 
 

@@ -9,25 +9,46 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, QWidget, QMessageBox, QPushButton, QFileDialog, QVBoxLayout
 
 class RSAEnc(QDialog):
+    e,N = 0,0
+    
     def __init__(self):
         super(RSAEnc, self).__init__()
         loadUi("RSAEnc.ui", self)
         self.decrypt.clicked.connect(self.gotoRSADec)
-        self.encrypt.clicked.connect(self.encrypting)
+        self.selectencrypt.clicked.connect(self.encrypting)
+        self.selectkey.clicked.connect(self.selectPubKey)
         self.savecipher.clicked.connect(self.saveCipher)
-        self.selectfile.clicked.connect(self.openFileToEncrypt)
+
+    def selectPubKey(self):
+            option=QFileDialog.Options()
+            file = QFileDialog.getOpenFileName(widget,"Open Single File","Default File","*.pub",options=option)
+            
+            if file[0] != '':
+                tuples = open(file[0],'r')
+                publicKey = tuples.read()
+                tuples.close()
+
+                e,N = RSA.unpackKeyTuples(publicKey)
+                
+                self.e = e
+                self.N = N
+                
+            self.key.setWordWrap(True)
+            self.key.setText(file[0])
 
     def encrypting(self):
-        self.file.setText("")
-        plaintext = self.plaintext.toPlainText()
-        key = self.key.toPlainText()
-        if self.key.toPlainText() != "":
-            cipher = RSA.encryptFile()
-        self.ciphertext.setText(cipher)
+        if self.key.text() != "":
+            option=QFileDialog.Options()
+            file = QFileDialog.getOpenFileName(widget,"Open Single File","Default File","All Files (*)",options=option)
+            cipher = RSA.encryptFile(file[0],self.N,self.e)
 
+            cipherHex = RSA.toHex(cipher)
+            self.file.setWordWrap(True)
+            self.file.setText(cipherHex)
+    
     def gotoRSADec(self):
-        RSADec = RSADec()
-        widget.addWidget(RSADec)
+        RSADecr = RSADec()
+        widget.addWidget(RSADecr)
         widget.setCurrentIndex(widget.currentIndex()+1)
     
     def saveCipher(self):
@@ -44,7 +65,7 @@ class RSAEnc(QDialog):
         if len(self.key.toPlainText()) != 0:
             self.warning.setText("")
             option=QFileDialog.Options()
-            file=QFileDialog.getOpenFileName(widget,"Open Single File","Default File","All Files(*)",options=option)
+            file = QFileDialog.getOpenFileName(widget,"Open Single File","Default File","All Files(*)",options=option)
             path = file[0]
             data = RC4Modified.encryptFiles(self.key.toPlainText(), path)
             file=QFileDialog.getSaveFileName(widget,"Save File Window Title","default.txt","All Files (*)",options=option)
@@ -66,8 +87,8 @@ class RSADec(QDialog):
         self.selectfile.clicked.connect(self.openFileToDecrypt)
 
     def gotoRSAEnc(self):
-        RSAEnc = RSAEnc()
-        widget.addWidget(RSAEnc)
+        RSAEncr = RSAEnc()
+        widget.addWidget(RSAEncr)
         widget.setCurrentIndex(widget.currentIndex()+1)
     
     def decrypting(self):
@@ -100,25 +121,46 @@ class RSAGenKey(QDialog):
         self.encrypt.clicked.connect(self.gotoRSAEnc)
         self.decrypt.clicked.connect(self.gotoRSADec)
         self.genKey.clicked.connect(self.genKeyPair)
+        self.savePri.clicked.connect(self.savePriKey)
+        self.savePub.clicked.connect(self.savePubKey)
 
+    def savePubKey(self):
+        if len(self.N.text()) != 0:
+            option=QFileDialog.Options()
+            option|=QFileDialog.DontUseNativeDialog
+
+            file=QFileDialog.getSaveFileName(widget,"Save File Window Title","publicKey.pub","*.pub",options=option)
+            file = open(file[0], "w",encoding="utf-8")
+            file.write('(' + self.e.text() + ',' + self.N.text() + ')')
+            file.close()
+
+    def savePriKey(self):
+        if len(self.N.text()) != 0:
+            option=QFileDialog.Options()
+            option|=QFileDialog.DontUseNativeDialog
+
+            file=QFileDialog.getSaveFileName(widget,"Save File Window Title","privateKey.pri","*.pri",options=option)
+            file = open(file[0], "w",encoding="utf-8")
+            file.write('(' + self.d.text() + ',' + self.N.text() + ')')
+            file.close()
 
     def genKeyPair(self):
         pubKey, privKey = RSA.generatePairKey()
         e,N = pubKey
-        d,N = privKey
+        d,N = privKey 
 
-        self.e.setText("   " + str(e))
-        self.d.setText("   " + str(d))
-        self.N.setText("   " + str(N))
+        self.e.setText(str(e))
+        self.d.setText(str(d))
+        self.N.setText(str(N))
 
     def gotoRSAEnc(self):
-        RSAEnc = RSAEnc()
-        widget.addWidget(RSAEnc)
+        RSAEncr = RSAEnc()
+        widget.addWidget(RSAEncr) 
         widget.setCurrentIndex(widget.currentIndex()+1)
     
     def gotoRSADec(self):
-        RSADec = RSADec()
-        widget.addWidget(RSADec)
+        RSADecr = RSADec()
+        widget.addWidget(RSADecr)
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 def suppress_qt_warnings():
