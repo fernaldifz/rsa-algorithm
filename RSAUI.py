@@ -2,7 +2,6 @@ from pydoc import plain
 import time
 import sys
 
-from rsa import encrypt
 import RSA
 from os import curdir, environ
 from PyQt5.uic import loadUi
