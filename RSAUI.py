@@ -1,6 +1,6 @@
 from pydoc import plain
 import time
-import sys
+import sys, os
 
 import RSA
 from os import curdir, environ
@@ -110,12 +110,20 @@ class RSADec(QDialog):
             file=QFileDialog.getSaveFileName(widget,"Save Result","plainResult.txt","All Files (*)",options=option)
             
             if file[0] != '':
-                file1 = open(file[0], "w",encoding="utf-8")
-                file2 = open("decrypted","r",encoding="utf-8")
-                cipher = file2.read()
-                file1.write(cipher)
-                file1.close()
-                file2.close()
+                if file[0].endswith('.txt'):
+                    file1 = open(file[0], "w",encoding="utf-8")
+                    file2 = open("decrypted","r",encoding="utf-8")
+                    cipher = file2.read()
+                    file1.write(cipher)
+                    file1.close()
+                    file2.close()
+                else:
+                    file1 = open(file[0], "wb")
+                    file2 = open("decrypted","rb")
+                    cipher = file2.read()
+                    file1.write(cipher)
+                    file1.close()
+                    file2.close()
                 self.warn_green.setText("File has been saved !")
         else:
             self.warn_red.setText("Select file first !")
@@ -153,17 +161,31 @@ class RSADec(QDialog):
             option=QFileDialog.Options()
             file = QFileDialog.getOpenFileName(widget,"Open file to encrypt","Default File","All Files (*)",options=option)
             if file[0] != '':
-                plain, dtime = RSA.decryptFile(file[0],self.d,self.N)
-                print(file[0])
-                text = ''
-                for idx in plain:
-                    text += idx
+                if file[0].endswith('.txt'):
+                    plain, dtime = RSA.decryptFile(file[0],self.d,self.N)
+                    # print(file[0])
+                    text = ''
+                    for idx in plain:
+                        text += idx
 
-                self.file.setText(text)
-                self.time.setWordWrap(True)
-                self.time.setText(str(round(dtime,4))+" S")
-                self.size.setWordWrap(True)
-                self.size.setText(str(RSA.showFileSize("encrypted")) + " B")
+                    self.file.setText(text)
+                    self.time.setWordWrap(True)
+                    self.time.setText(str(round(dtime,4))+" S")
+                    self.size.setWordWrap(True)
+                    self.size.setText(str(RSA.showFileSize("encrypted")) + " B")
+                else:
+                    plain, dtime = RSA.decryptFile(file[0],self.d,self.N)
+                    for i, value in enumerate(plain):
+                        plain[i] = ord(value)
+                    byteplain = bytearray(plain)
+                    file = open("decrypted",'wb')
+                    file.write(byteplain)
+                    file.close()
+                    self.file.setText("File sudah dideskripsi, silahkan simpan file hasil dekripsi")
+                    self.time.setWordWrap(True)
+                    self.time.setText(str(round(dtime,4))+" S")
+                    self.size.setWordWrap(True)
+                    self.size.setText(str(RSA.showFileSize("encrypted")) + " B")          
         else:
             self.warn_red.setText("Select private key First!")
     

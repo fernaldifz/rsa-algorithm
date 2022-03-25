@@ -36,6 +36,8 @@ def encryptFile(Path, n, e): #enkripsi menggunakan RSA
     encryptTime = time.time() - startTime
     return encryptArray, encryptTime
 
+
+
 def decryptFile(Path, d,n): #dekripsi menggunakan RSA
     startTime = time.time()
 
@@ -54,8 +56,9 @@ def decryptFile(Path, d,n): #dekripsi menggunakan RSA
     with open("decrypted", "w", encoding="utf-8") as decryptedFile:
         decryptedFile.write(decryptString)
 
-    decryptTime = time.time() - startTime      
+    decryptTime = time.time() - startTime
     return decryptArray, decryptTime
+
 
 def isPrime(num):
     if num == 2:
@@ -126,3 +129,23 @@ def openFile(Path):
 
     byteArray = bytearray(data)
     return byteArray
+
+
+#############
+# SEMENTARA # 
+# n = 3337
+# e = 79
+# d = 1019 
+#############
+# p = generatePairKey()
+# print(p)
+def encryptDecryptFile(n, e, d):
+    # enc,etime = encryptFile("ori-file/test_text.txt", n, e)
+    # print("array enkripsi: ", enc)
+    # print("time : ",round(etime,4))
+    dec, dtime = decryptBin("cipher-result/cipherResult.mp4", d,n)
+    # print("array dekripsi", dec)
+    print("time : ",dtime)
+
+# encryptDecryptFile(n, e, d)
+#############
