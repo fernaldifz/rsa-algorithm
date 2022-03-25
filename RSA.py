@@ -4,12 +4,12 @@ def generatePairNumbers():
     primes = []
     p,q,counter = 0,0,0
 
-    for i in range(2**8,2**12):
+    for i in range(2**6,2**8):
         if isPrime(i):
             primes.append(i)
             counter += 1
 
-        if counter == 500:
+        if counter == 100:
             break
 
     while p == q:
@@ -34,9 +34,9 @@ def encryptFile(Path, n, e): #enkripsi menggunakan RSA
         encryptedFile.write(encryptString)
     
     encryptTime = time.time() - startTime
-    return (encryptArray, encryptTime)
+    return encryptArray, encryptTime
 
-def decryptFile(Path, d): #dekripsi menggunakan RSA
+def decryptFile(Path, d,n): #dekripsi menggunakan RSA
     startTime = time.time()
 
     encryptFile = open(Path, "r").readlines()
@@ -51,11 +51,11 @@ def decryptFile(Path, d): #dekripsi menggunakan RSA
     for i in range(len(decryptArray)):
         decryptString += decryptArray[i]
     
-    with open("decrypted", "w") as decryptedFile:
+    with open("decrypted", "w", encoding="utf-8") as decryptedFile:
         decryptedFile.write(decryptString)
 
     decryptTime = time.time() - startTime      
-    return (decryptArray, decryptTime)
+    return decryptArray, decryptTime
 
 def isPrime(num):
     if num == 2:
@@ -81,7 +81,7 @@ def generatePairKey(): #pembangkit pasangan kunci (privat dan publik)
     print("mulai cari e")
 
     publicKeyCandidate = []
-    for e in range(2**8,phi//(2**8)):
+    for e in range(2,phi//(2**8)):
         if isPrime(e):
             publicKeyCandidate.append(e)
 
@@ -96,7 +96,7 @@ def generatePairKey(): #pembangkit pasangan kunci (privat dan publik)
 def toHex(encryptArray): #khusus untuk ciphertext dalam notasi heksadesimal
     encryptHexArray = [0 for i in range(len(encryptArray))]
     for i in range(len(encryptArray)):
-        encryptHexArray[i] = str(hex(int(encryptArray[i])))
+        encryptHexArray[i] = str(hex(int(encryptArray[i]))[2:])
     
     encryptHexString = " "
     encryptHexString = encryptHexString.join(encryptHexArray)
@@ -130,18 +130,19 @@ def openFile(Path):
 
 #############
 # SEMENTARA # 
-# n = 3337
-# e = 79
-# d = 1019 
-n = 26878129
-e = 4703
-d = 14704967 
+# n = 25351
+# e = 43
+# d = 2907 
 #############
-# def encryptDecryptFile(n, e, d):
-#     enc = encryptFile("ori-file/test_text.txt", n, e)
-#     print("array enkripsi: ", enc)
-#     dec = decryptFile("encrypted", d)
-#     print("array dekripsi", dec)
+# p = generatePairKey()
+# print(p)
+def encryptDecryptFile(n, e, d):
+    # enc,etime = encryptFile("ori-file/test_text.txt", n, e)
+    # print("array enkripsi: ", enc)
+    # print("time : ",round(etime,4))
+    dec, dtime = decryptFile("cipher-result/cipherResult.jpg", d,n)
+    # print("array dekripsi", dec)
+    print("time : ",dtime)
 
 # encryptDecryptFile(n, e, d)
 #############

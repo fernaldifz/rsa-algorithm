@@ -71,35 +71,6 @@ color: #FCE417;</string>
      <string>RSA</string>
     </property>
    </widget>
-   <widget class="QLabel" name="file">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>110</y>
-      <width>181</width>
-      <height>131</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background: #ffffff;
-border-radius: 2px;
-ont-family: Open Sans;
-font-style: normal;
-font-weight: bold;
-font-size: 24px;
-/* identical to box height */
-
-
-color: #101920;
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="key">
     <property name="geometry">
      <rect>
@@ -115,7 +86,7 @@ border-radius: 2px;
 ont-family: Open Sans;
 font-style: normal;
 font-weight: bold;
-font-size: 24px;
+font-size: 16px;
 /* identical to box height */
 
 
@@ -173,7 +144,7 @@ color: #101920;</string>
      <string>Select File, Decrypt</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="savecipher">
+   <widget class="QPushButton" name="saveplain">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -249,7 +220,7 @@ color: #FCE417;
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>410</y>
+      <y>380</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -273,7 +244,7 @@ color: #FCE417;
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>400</y>
+      <y>370</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -284,7 +255,7 @@ border-radius: 2px;
 ont-family: Open Sans;
 font-style: normal;
 font-weight: bold;
-font-size: 24px;
+font-size: 12px;
 /* identical to box height */
 
 
@@ -302,7 +273,7 @@ color: #101920;
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>410</y>
+      <y>380</y>
       <width>71</width>
       <height>16</height>
      </rect>
@@ -326,7 +297,7 @@ color: #FCE417;
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>400</y>
+      <y>370</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -337,11 +308,88 @@ border-radius: 2px;
 ont-family: Open Sans;
 font-style: normal;
 font-weight: bold;
-font-size: 24px;
+font-size: 12px;
 /* identical to box height */
 
 
 color: #101920;
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="warn_green">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>450</y>
+      <width>351</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">ont-family: Open Sans;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+/* identical to box height */
+
+
+color: lime;
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="file">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>110</y>
+      <width>181</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family: Open Sans;
+font-style: normal;
+font-weight: bold;
+font-size: 10px;
+/* identical to box height */
+
+
+color: #101920;</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="warn_red">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>450</y>
+      <width>351</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family: Open Sans;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+/* identical to box height */
+
+
+color: red;
 </string>
     </property>
     <property name="text">
