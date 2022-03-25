@@ -175,13 +175,16 @@ class RSADec(QDialog):
                     self.size.setText(str(RSA.showFileSize("encrypted")) + " B")
                 else:
                     plain, dtime = RSA.decryptFile(file[0],self.d,self.N)
+                    text = ''
+                    for idx in plain:
+                        text += idx
+                    self.file.setText(text)
                     for i, value in enumerate(plain):
                         plain[i] = ord(value)
                     byteplain = bytearray(plain)
                     file = open("decrypted",'wb')
                     file.write(byteplain)
                     file.close()
-                    self.file.setText("File sudah dideskripsi, silahkan simpan file hasil dekripsi")
                     self.time.setWordWrap(True)
                     self.time.setText(str(round(dtime,4))+" S")
                     self.size.setWordWrap(True)
