@@ -126,23 +126,3 @@ def openFile(Path):
 
     byteArray = bytearray(data)
     return byteArray
-
-
-#############
-# SEMENTARA # 
-# n = 25351
-# e = 43
-# d = 2907 
-#############
-# p = generatePairKey()
-# print(p)
-def encryptDecryptFile(n, e, d):
-    # enc,etime = encryptFile("ori-file/test_text.txt", n, e)
-    # print("array enkripsi: ", enc)
-    # print("time : ",round(etime,4))
-    dec, dtime = decryptFile("cipher-result/cipherResult.jpg", d,n)
-    # print("array dekripsi", dec)
-    print("time : ",dtime)
-
-# encryptDecryptFile(n, e, d)
-#############
